@@ -54,7 +54,7 @@ export default function AddProductModal({
 
   // Get unique categories from existing products
   const existingCategories = useMemo(() => {
-    const cats = new Set(products.map((p) => p.category).filter(Boolean));
+    const cats = new Set(products.map((p) => p.category).filter(Boolean) as string[]);
     return Array.from(cats).sort();
   }, [products]);
 
