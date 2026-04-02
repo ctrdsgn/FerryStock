@@ -24,7 +24,8 @@ export default function SignInForm() {
         setError(result.error);
       }
     } catch (err) {
-      setError('Terjadi kesalahan yang tidak diharapkan');
+      console.error('Sign in error:', err);
+      setError(err instanceof Error ? err.message : 'Terjadi kesalahan yang tidak diharapkan');
     } finally {
       setLoading(false);
     }
