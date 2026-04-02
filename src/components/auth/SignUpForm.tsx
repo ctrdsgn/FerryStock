@@ -143,7 +143,7 @@ export default function SignUpForm() {
                   <Checkbox
                     id="terms"
                     checked={isChecked}
-                    onChange={(e) => setIsChecked(e.target.checked)}
+                    onChange={setIsChecked}
                   />
                   <Label htmlFor="terms" className="text-sm font-normal cursor-pointer select-none text-gray-700 dark:text-gray-400">
                     Saya setuju dengan{" "}
