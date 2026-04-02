@@ -11,6 +11,7 @@ import { useNotification } from "@/context/NotificationContext";
 export interface StockUpdate {
   type: StockType;
   quantity: number;
+  supplier?: string;
   note?: string;
 }
 
