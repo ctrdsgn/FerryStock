@@ -111,7 +111,7 @@ export default function SignInForm() {
                     <Checkbox
                       id="remember"
                       checked={isChecked}
-                      onChange={(e) => setIsChecked(e.target.checked)}
+                      onChange={setIsChecked}
                     />
                     <Label htmlFor="remember" className="text-sm font-normal cursor-pointer select-none text-gray-700 dark:text-gray-400">
                       Ingat saya
