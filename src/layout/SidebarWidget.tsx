@@ -3,14 +3,16 @@
 import React, { useState, useEffect } from "react";
 
 const quotes = [
-  { text: "Stok aman, hati tenang! 💪", author: "FerryStock" },
-  { text: "Inventory rapi, rejeki lancar! ✨", author: "FerryStock" },
-  { text: "Setiap produk bercerita 📦", author: "FerryStock" },
-  { text: "Kelola stok, raih profit! 💰", author: "FerryStock" },
-  { text: "Detail kecil, dampak besar! 🎯", author: "FerryStock" },
-  { text: "Stok tepat, pelanggan happy! 😊", author: "FerryStock" },
-  { text: "Kerja cerdas, bukan keras! 🧠", author: "FerryStock" },
-  { text: "Success is in the details! 📊", author: "FerryStock" },
+  { text: "Hati yang paling tenang adalah hati yang selalu merasa cukup dengan ketetapan-Nya.", author: "" },
+  { text: "Jangan biarkan duniamu terlalu bising hingga kamu lupa mendengarkan bisikan doa dalam sujudmu.", author: "" },
+  { text: "Allah tidak menjanjikan langit selalu biru, tapi Dia menjanjikan pertolongan di setiap kesulitan.", author: "" },
+  { text: "Kadang cara terbaik untuk mendapatkan jawaban adalah dengan berhenti bertanya dan mulai berserah.", author: "" },
+  { text: "Seringkali kita terlalu sibuk memikirkan apa yang hilang, sampai lupa mensyukuri apa yang masih ada.", author: "" },
+  { text: "Doa bukanlah ban serep yang dikeluarkan saat darurat, tapi kemudi yang mengarahkan perjalanan hidup.", author: "" },
+  { text: "Seberat apa pun bebanmu, ingatlah bahwa Allah tidak pernah salah memberikan pundak.", author: "" },
+  { text: "Perbaiki hubunganmu dengan Allah, maka Allah akan memperbaiki hubunganmu dengan sesama manusia.", author: "" },
+  { text: "Dunia itu hanya sementara, maka jangan sampai kamu menukar akhirat yang kekal dengan kesenangan sesaat.", author: "" },
+  { text: "Diam dalam sabar jauh lebih mulia daripada menjelaskan segala hal kepada mereka yang tidak ingin mengerti.", author: "" },
 ];
 
 export default function SidebarWidget() {
@@ -104,9 +106,11 @@ export default function SidebarWidget() {
           <p className="text-xs font-medium leading-relaxed">
             {quotes[quoteIndex].text}
           </p>
-          <p className="mt-1.5 text-[10px] text-white/60">
-            — {quotes[quoteIndex].author}
-          </p>
+          {quotes[quoteIndex].author && (
+            <p className="mt-1.5 text-[10px] text-white/60">
+              — {quotes[quoteIndex].author}
+            </p>
+          )}
         </div>
 
         {/* Hint */}
