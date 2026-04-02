@@ -133,7 +133,7 @@ export async function getStockReport(filters: ReportFilters): Promise<ReportSumm
     });
 
     const categoryBreakdown = Array.from(categoryStats.values()).sort(
-      (a, b) => b.movements - a.movements
+      (a, b) => b.totalMovements - a.totalMovements
     );
 
     // Daily trend (group by date)
