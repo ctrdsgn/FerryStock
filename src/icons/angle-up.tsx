@@ -1,0 +1,29 @@
+import React from 'react';
+
+interface AngleUpProps extends React.SVGProps<SVGSVGElement> {
+  size?: number | string;
+  color?: string;
+}
+
+const AngleUp: React.FC<AngleUpProps> = ({
+  size = 8,
+  color = 'currentColor',
+  ...props
+}) => {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 8 5"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    ><path
+                          d="M4.40962 0.585167C4.21057 0.300808 3.78943 0.300807 3.59038 0.585166L1.05071 4.21327C0.81874 4.54466 1.05582 5 1.46033 5H6.53967C6.94418 5 7.18126 4.54466 6.94929 4.21327L4.40962 0.585167Z"
+                          fill="currentColor"
+                        />
+    </svg>
+  );
+};
+
+export default AngleUp;
