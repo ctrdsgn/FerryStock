@@ -115,18 +115,18 @@ export async function getStockReport(filters: ReportFilters): Promise<ReportSumm
     // Category breakdown
     const categoryStats = new Map<
       string,
-      { category: string | null; movements: number; stockIn: number; stockOut: number }
+      { category: string | null; totalMovements: number; stockIn: number; stockOut: number }
     >();
 
     logs.forEach((log) => {
       const category = log.product.category || 'Lainnya';
       const existing = categoryStats.get(category) || {
         category,
-        movements: 0,
+        totalMovements: 0,
         stockIn: 0,
         stockOut: 0,
       };
-      existing.movements += 1;
+      existing.totalMovements += 1;
       if (log.type === 'IN') existing.stockIn += log.quantity;
       if (log.type === 'OUT') existing.stockOut += log.quantity;
       categoryStats.set(category, existing);
