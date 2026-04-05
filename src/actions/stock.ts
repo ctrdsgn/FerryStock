@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { StockType, StockLog } from '@/types';
+import { StockType, StockLog, KasirSource, KasirTransactionInput } from '@/types';
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
 
@@ -106,6 +106,103 @@ export async function getProductLogs(productId: string): Promise<StockLog[]> {
     return logs;
   } catch (error) {
     console.error('Error fetching product logs:', error);
+    return [];
+  }
+}
+
+export async function processKasirTransaction(
+  input: KasirTransactionInput
+): Promise<{ success: boolean; logIds?: string[]; error?: string }> {
+  try {
+    // Validate input
+    if (!input.items || input.items.length === 0) {
+      return { success: false, error: 'No items in transaction' };
+    }
+
+    // Map source to readable string for supplier field
+    const sourceMap: Record<KasirSource, string> = {
+      'INTERNAL': 'Internal Take',
+      'SHOPEE': 'Shopee',
+      'WEBSITE': 'Website',
+      'OTHER': 'Other',
+    };
+
+    const supplierName = sourceMap[input.source] || input.source;
+    const note = input.referenceNumber
+      ? `${input.notes ? input.notes + ' | ' : ''}Ref: ${input.referenceNumber}`
+      : input.notes;
+
+    const logIds: string[] = [];
+
+    const result = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      for (const item of input.items) {
+        // Get current product
+        const product = await tx.product.findUnique({
+          where: { id: item.productId },
+        });
+
+        if (!product) {
+          throw new Error(`Product not found: ${item.productId}`);
+        }
+
+        // Validate stock availability
+        if (item.quantity > product.stock) {
+          throw new Error(`Insufficient stock for ${product.name}. Available: ${product.stock}`);
+        }
+
+        // Calculate new stock
+        const newStock = product.stock - item.quantity;
+
+        // Update product stock
+        await tx.product.update({
+          where: { id: item.productId },
+          data: { stock: newStock },
+        });
+
+        // Create stock log entry
+        const stockLog = await tx.stockLog.create({
+          data: {
+            productId: item.productId,
+            type: 'OUT' as StockType,
+            quantity: item.quantity,
+            prevStock: product.stock,
+            nextStock: newStock,
+            supplier: supplierName,
+            note: note,
+          },
+        });
+
+        logIds.push(stockLog.id);
+      }
+    });
+
+    revalidatePath('/inventory');
+    revalidatePath('/dashboard');
+    revalidatePath('/transactions');
+    revalidatePath('/kasir');
+
+    return { success: true, logIds };
+  } catch (error) {
+    console.error('Error processing kasir transaction:', error);
+    if (error instanceof Error) {
+      return { success: false, error: error.message };
+    }
+    return { success: false, error: 'Failed to process kasir transaction' };
+  }
+}
+
+export async function getRecentKasirTransactions(limit: number = 50): Promise<StockLog[]> {
+  try {
+    const logs = await prisma.stockLog.findMany({
+      where: {
+        type: 'OUT',
+      },
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+    });
+    return logs;
+  } catch (error) {
+    console.error('Error fetching kasir transactions:', error);
     return [];
   }
 }

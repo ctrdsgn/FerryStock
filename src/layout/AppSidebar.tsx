@@ -9,6 +9,7 @@ import {
   ListIcon,
   TableIcon,
   ReportIcon,
+  PaperPlaneIcon,
 } from "../icons/index";
 import SidebarWidget from "./SidebarWidget";
 
@@ -28,6 +29,11 @@ const navItems: NavItem[] = [
     icon: <TableIcon />,
     name: "Inventory",
     path: "/inventory",
+  },
+  {
+    icon: <PaperPlaneIcon />,
+    name: "Kasir",
+    path: "/kasir",
   },
   {
     icon: <ListIcon />,

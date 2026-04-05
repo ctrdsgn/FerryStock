@@ -28,3 +28,21 @@ export interface DashboardStats {
   criticallyLowItems: number;
   lowStockProducts: Product[];
 }
+
+// Kasir (Cashier) types
+export type KasirSource = 'INTERNAL' | 'SHOPEE' | 'WEBSITE' | 'OTHER';
+
+export interface KasirCartItem {
+  product: Product;
+  quantity: number;
+}
+
+export interface KasirTransactionInput {
+  items: {
+    productId: string;
+    quantity: number;
+  }[];
+  source: KasirSource;
+  referenceNumber?: string;
+  notes?: string;
+}
